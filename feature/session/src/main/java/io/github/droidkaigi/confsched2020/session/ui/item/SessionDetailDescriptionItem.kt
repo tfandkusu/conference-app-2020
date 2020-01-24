@@ -25,6 +25,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailD
 
 class SessionDetailDescriptionItem @AssistedInject constructor(
     @Assisted private val session: Session,
+    @Assisted private val isShowFullText: Boolean,
     @Assisted onShowFullText: () -> Unit
 ) :
     BindableItem<ItemSessionDetailDescriptionBinding>() {
@@ -67,7 +68,8 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
         textView.doOnPreDraw {
             textView.text = fullDescription
             // Return here if not more than the specified number of rows
-            if (!(textView.lineCount > ELLIPSIS_LINE_COUNT && showEllipsis)) return@doOnPreDraw
+            if (textView.lineCount <= ELLIPSIS_LINE_COUNT || !showEllipsis || isShowFullText)
+                return@doOnPreDraw
             val lastLineStartPosition = textView.layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
             val context = textView.context
             val ellipsis = context.getString(R.string.ellipsis_label)
@@ -122,6 +124,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     interface Factory {
         fun create(
             session: Session,
+            isShowFullText: Boolean,
             onShowFullText: () -> Unit
         ): SessionDetailDescriptionItem
     }
