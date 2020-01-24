@@ -160,7 +160,9 @@ class SessionDetailFragment : DaggerFragment() {
     private fun setupSessionViews(session: Session) {
         val items = mutableListOf<Group>()
         items += sessionDetailTitleItemFactory.create(session)
-        items += sessionDetailDescriptionItemFactory.create(session)
+        items += sessionDetailDescriptionItemFactory.create(session) {
+            sessionDetailViewModel.onShowFullText()
+        }
         if (session.hasIntendedAudience)
             items += sessionDetailTargetItemFactory.create(session)
         if (session.hasSpeaker) {

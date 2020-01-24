@@ -49,7 +49,7 @@ class SessionDetailViewModel @AssistedInject constructor(
     private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
         MutableLiveData(LoadingState.Loaded)
 
-    private val isDescriptionOpenLiveData = MutableLiveData<Boolean>()
+    private val isDescriptionOpenLiveData = MutableLiveData<Boolean>(false)
 
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
@@ -94,6 +94,10 @@ class SessionDetailViewModel @AssistedInject constructor(
                 favoriteLoadingStateLiveData.value = LoadingState.Error(e)
             }
         }
+    }
+
+    fun onShowFullText() {
+        isDescriptionOpenLiveData.value = true
     }
 
     @AssistedInject.Factory
