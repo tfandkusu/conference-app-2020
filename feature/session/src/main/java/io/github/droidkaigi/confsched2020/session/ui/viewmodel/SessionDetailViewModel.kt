@@ -29,7 +29,7 @@ class SessionDetailViewModel @AssistedInject constructor(
         val isLoading: Boolean,
         val error: AppError?,
         val session: Session?,
-        val isDescriptionOpen: Boolean
+        val isDescriptionShowFullText: Boolean
     ) {
         companion object {
             val EMPTY = UiModel(false, null, null, false)
@@ -49,18 +49,18 @@ class SessionDetailViewModel @AssistedInject constructor(
     private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
         MutableLiveData(LoadingState.Loaded)
 
-    private val isDescriptionOpenLiveData = MutableLiveData<Boolean>(false)
+    private val isDescriptionShowFullTextLiveData = MutableLiveData<Boolean>(false)
 
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData,
-        liveData3 = isDescriptionOpenLiveData
+        liveData3 = isDescriptionShowFullTextLiveData
     ) { current: UiModel,
         sessionLoadState: LoadState<Session>,
         favoriteState: LoadingState,
-        isDescriptionOpen: Boolean ->
+        isDescriptionShowFullText: Boolean ->
         val isLoading =
             sessionLoadState.isLoading || favoriteState.isLoading
         val sessions = when (sessionLoadState) {
@@ -80,7 +80,7 @@ class SessionDetailViewModel @AssistedInject constructor(
                     .getErrorIfExists()
                     .toAppError(),
             session = sessions,
-            isDescriptionOpen = isDescriptionOpen
+            isDescriptionShowFullText = isDescriptionShowFullText
         )
     }
 
@@ -97,7 +97,7 @@ class SessionDetailViewModel @AssistedInject constructor(
     }
 
     fun onShowFullText() {
-        isDescriptionOpenLiveData.value = true
+        isDescriptionShowFullTextLiveData.value = true
     }
 
     @AssistedInject.Factory

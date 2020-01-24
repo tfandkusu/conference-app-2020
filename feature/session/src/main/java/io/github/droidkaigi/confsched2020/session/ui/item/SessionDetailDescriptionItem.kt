@@ -23,12 +23,9 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailDescriptionBinding
 
-/**
- * @param onOpened it called transition end for showing full description
- */
 class SessionDetailDescriptionItem @AssistedInject constructor(
     @Assisted private val session: Session,
-    @Assisted onOpened: () -> Unit
+    @Assisted onShowFullText: () -> Unit
 ) :
     BindableItem<ItemSessionDetailDescriptionBinding>() {
 
@@ -43,7 +40,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     init {
         transition.addListener(object : Transition.TransitionListener {
             override fun onTransitionEnd(transition: Transition) {
-                onOpened()
+                onShowFullText()
             }
 
             override fun onTransitionResume(transition: Transition) {
@@ -125,7 +122,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     interface Factory {
         fun create(
             session: Session,
-            onOpened: () -> Unit
+            onShowFullText: () -> Unit
         ): SessionDetailDescriptionItem
     }
 }
